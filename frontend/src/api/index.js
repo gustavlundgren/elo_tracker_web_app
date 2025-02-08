@@ -13,6 +13,16 @@ var url = 'http://localhost:5000/api'
 const auth = getAuth(app);
 //const provider = new GoogleAuthProvider();
 
+async function delete_game(gid){
+    try {
+        let response = await fetch(url + '/games/delete/' + gid);
+        let data     = await response.json();
+        console.log(data);
+    } catch (error) {
+        console.error('Error fetching games:', error);
+    }
+
+}
 
 
 async function verify_game(gid, token) {
@@ -158,6 +168,17 @@ async function add_game(players, winner) {
     }
 }
 
+async function get_unverified(){
+    let uid = auth.currentUser.user.uid;
+    try {
+        let response = await fetch(url + '/games/unverified/' + uid);
+        let data = await response.json();
+        console.log(data);
+        return data
+    } catch (error) {
+        console.error('Error fetching player:', error);
+    }
+}
 
 
 async function get_player(uid) {
@@ -174,13 +195,9 @@ async function get_player(uid) {
 
 //login("linda.bergstig@gmail.com", "password").then(() =>{ 
 //new_user("Pdiddy","linda.bergstig@gmail.com", "password")//});
-login("linda.bergstig@gmail.com", "password").then(() => { add_game(['Pdiddy', 'Dootz'], 'Pdiddy') })
-await new Promise(r => setTimeout(r, 1000));
+//login("linda.bergstig@gmail.com", "password").then(() => { add_game(['Pdiddy', 'Dootz'], 'Pdiddy') })
+//await new Promise(r => setTimeout(r, 1000));
 
-add_game(['Pdiddy', 'Dootz'], 'Pdiddy')
-add_game(['Pdiddy', 'Dootz'], 'Dootz')
-add_game(['Pdiddy', 'Theo'], 'Pdiddy')
-add_game(['Pdiddy', 'Oscar'], 'Oscar')
 //await new Promise(r => setTimeout(r, 1000));
 //onsole.log(auth.currentUser.user.uid)
 //const token = await auth.currentUser.user.getIdToken();

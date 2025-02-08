@@ -38,64 +38,37 @@
 </template>
 
 <script>
-export default {
-    data() {
-        return {
-            username: 'Player1',
-            elo: 1200,
-            gameHistory: [
-                { id: 1, date: '2023-10-01', opponent: 'Player2', result: 'Win' },
-                { id: 2, date: '2023-10-02', opponent: 'Player3', result: 'Loss' },
-                { id: 3, date: '2023-10-03', opponent: 'Player4', result: 'Win' },
-                // Add more games for testing scroll
-                { id: 4, date: '2023-10-04', opponent: 'Player5', result: 'Win' },
-                { id: 5, date: '2023-10-05', opponent: 'Player6', result: 'Loss' },
-                { id: 6, date: '2023-10-06', opponent: 'Player7', result: 'Draw' },
-                { id: 6, date: '2023-10-06', opponent: 'Player7', result: 'Draw' },
-                { id: 6, date: '2023-10-06', opponent: 'Player7', result: 'Draw' },
-                { id: 6, date: '2023-10-06', opponent: 'Player7', result: 'Draw' },
-                { id: 6, date: '2023-10-06', opponent: 'Player7', result: 'Draw' },
-                { id: 6, date: '2023-10-06', opponent: 'Player7', result: 'Draw' },
-                { id: 6, date: '2023-10-06', opponent: 'Player7', result: 'Draw' },
-                { id: 6, date: '2023-10-06', opponent: 'Player7', result: 'Draw' },
-                { id: 6, date: '2023-10-06', opponent: 'Player7', result: 'Draw' },
-                { id: 6, date: '2023-10-06', opponent: 'Player7', result: 'Draw' },
-                { id: 6, date: '2023-10-06', opponent: 'Player7', result: 'Draw' },
-                { id: 6, date: '2023-10-06', opponent: 'Player7', result: 'Draw' },
-                { id: 6, date: '2023-10-06', opponent: 'Player7', result: 'Draw' },
-                { id: 6, date: '2023-10-06', opponent: 'Player7', result: 'Draw' },
-                { id: 6, date: '2023-10-06', opponent: 'Player7', result: 'Draw' },
-            ],
-            // Example pending requests (You can replace this with real data)
-            pendingRequests: [
-                { id: 1, game: 'Game 1', opponent: 'Player2' },
-                { id: 2, game: 'Game 2', opponent: 'Player3' },
-            ],
-        };
-    },
-    computed: {
-        // This computed property sorts the game history in descending order (recent first)
-        sortedGameHistory() {
-            return this.gameHistory.slice().reverse();
-        }
-    },
-    methods: {
-        acceptRequest(request) {
-            // Handle accepting the request (you can send an API call here to confirm)
-            console.log('Accepted:', request);
-            this.removeRequest(request);
+    import {get_unverified, verify_game, delete_game} from '../api/index.js';
+
+    export default {
+        data() {
+            return await get_unverified()
         },
-        rejectRequest(request) {
-            // Handle rejecting the request (you can send an API call here to reject)
-            console.log('Rejected:', request);
-            this.removeRequest(request);
+        computed: {
+            // This computed property sorts the game history in descending order (recent first)
+            sortedGameHistory() {
+                return this.gameHistory.slice().reverse();
+            }
         },
-        removeRequest(request) {
-            // Remove the request from the pendingRequests array
-            this.pendingRequests = this.pendingRequests.filter(r => r.id !== request.id);
+        methods: {
+            acceptRequest(request) {
+                // Handle accepting the request (you can send an API call here to confirm)
+                console.log('Accepted:', request);
+                this.removeRequest(request);
+                await verify_game(request.id);
+            },
+            rejectRequest(request) {
+                // Handle rejecting the request (you can send an API call here to reject)
+                console.log('Rejected:', request);
+                this.removeRequest(request);
+                await delete_game(request.id);
+            },
+            removeRequest(request) {
+                // Remove the request from the pendingRequests array
+                this.pendingRequests = this.pendingRequests.filter(r => r.id !== request.id);
+            }
         }
-    }
-};
+    };
 </script>
 
 <style scoped>
