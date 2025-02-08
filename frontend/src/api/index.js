@@ -174,13 +174,9 @@ async function get_player(uid) {
 
 //login("linda.bergstig@gmail.com", "password").then(() =>{ 
 //new_user("Pdiddy","linda.bergstig@gmail.com", "password")//});
-login("linda.bergstig@gmail.com", "password").then(() => { add_game(['Pdiddy', 'Dootz'], 'Pdiddy') })
-await new Promise(r => setTimeout(r, 1000));
+//login("linda.bergstig@gmail.com", "password").then(() => { add_game(['Pdiddy', 'Dootz'], 'Pdiddy') })
+//await new Promise(r => setTimeout(r, 1000));
 
-add_game(['Pdiddy', 'Dootz'], 'Pdiddy')
-add_game(['Pdiddy', 'Dootz'], 'Dootz')
-add_game(['Pdiddy', 'Theo'], 'Pdiddy')
-add_game(['Pdiddy', 'Oscar'], 'Oscar')
 //await new Promise(r => setTimeout(r, 1000));
 //onsole.log(auth.currentUser.user.uid)
 //const token = await auth.currentUser.user.getIdToken();

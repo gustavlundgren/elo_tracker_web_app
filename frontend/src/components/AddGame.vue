@@ -1,3 +1,5 @@
+from index.js
+
 <template>
     <div class="add-game-container">
       <h2>Add Game</h2>
@@ -24,29 +26,37 @@
             required
           />
         </div>
-        <button type="submit" class="submit-btn">Add Game</button>
+        <button type="submit" class="submit-btn" id="submit_button">Add Game</button>
       </form>
     </div>
   </template>
   
   <script>
-  export default {
-    data() {
-      return {
-        opponent: '',
-        winner: '',
-      };
-    },
-    methods: {
-      submitForm() {
-        // Handle form submission logic here
-        console.log(`Opponent: ${this.opponent}, Winner: ${this.winner}`);
-        // Reset form fields
-        this.opponent = '';
-        this.winner = '';
+    import { add_game } from '../api/index.js';
+    export default {
+      data() {
+        return {
+          opponent: '',
+          winner: '',
+        };
       },
-    },
-  };
+      methods: {
+        async submitForm() {
+          try {
+            await add_game([this.opponent, this.winner], this.winner);
+            console.log(`Game added: Opponent - ${this.opponent}, Winner - ${this.winner}`);
+            this.opponent = '';
+            this.winner = '';
+          } catch (error) {
+            console.error("Error adding game:", error);
+          }
+        }
+      },
+    };
+    document.getElementById(submit_button).onclick({
+
+    })
+  
   </script>
   
   <style scoped>
