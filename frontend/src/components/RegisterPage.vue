@@ -22,23 +22,25 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      username: '',
-      password: '',
-      email: ''
-    };
-  },
-  methods: {
-    handleRegister() {
-      // Handle registration logic here
-      console.log('Username:', this.username);
-      console.log('Password:', this.password);
-      console.log('Email:', this.email);
+  import { new_user } from "../api/index.js";
+
+  export default {
+    data() {
+      return {
+        username: '',
+        password: '',
+        email: ''
+      };
+    },
+    methods: {
+      handleRegister() {
+        console.log('Username:', this.username);
+        console.log('Password:', this.password);
+        console.log('Email:', this.email);
+        await new_user(this.username, this.email, this.password);
+      }
     }
-  }
-};
+  };
 </script>
 
 <style>

@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from main import db
 from firebase_admin import auth
 import datetime
+from src.elo import process_game
 
 routes_blueprint = Blueprint('routes', __name__)
 

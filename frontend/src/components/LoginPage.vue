@@ -11,36 +11,42 @@
                 <input type="password" id="password" placeholder="Enter your password" v-model="password" required />
             </div>
             <button type="submit" class="register-button">Login</button>
-            <button class="register-button" @click="goToRegister">Register</button>
+            <button type="button" class="register-button" @click="goToRegister">Register</button>
         </form>
+        <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
     </div>
 </template>
 
 <script>
+    import { login } from "../api/index.js"; // ✅ Import login function from /src/api/index.js
 
-
-export default {
-    data() {
-        return {
-            email: '',
-            password: ''
-        };
-    },
-    methods: {
-        handleLogin() {
-            console.log('Email:', this.email);  // Adjusted variable name
-            console.log('Password:', this.password);
-            login(this.username, this.password);
+    export default {
+        data() {
+            return {
+                email: '',
+                password: '',
+                errorMessage: ''
+            };
         },
-
-        goToRegister() {
-            this.$router.push('/register');
+        methods: {
+            async handleLogin() {
+                try {
+                    await login(this.email, this.password); 
+                    console.log("Login successful");
+                    this.$router.push('/my-profile');
+                } catch (error) {
+                    console.error('Login error:', error);
+                    this.errorMessage = "Invalid email or password.";
+                }
+            },
+            goToRegister() {
+                this.$router.push('/register');
+            }
         }
-    }
-};
+    };
 </script>
 
-<style>
+<style scoped>
 .login-page {
     max-width: 400px;
     margin: 0 auto;
@@ -66,17 +72,6 @@ input {
     box-sizing: border-box;
 }
 
-.login-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #bb86fc;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-bottom: 10px;
-}
-
 .register-button {
     width: 100%;
     padding: 10px;
@@ -90,5 +85,10 @@ input {
 
 button:hover {
     background-color: #03dac6;
+}
+
+.error {
+    color: red;
+    margin-top: 10px;
 }
 </style>
