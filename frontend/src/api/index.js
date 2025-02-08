@@ -13,6 +13,16 @@ var url = 'http://localhost:5000/api'
 const auth = getAuth(app);
 //const provider = new GoogleAuthProvider();
 
+async function delete_game(gid){
+    try {
+        let response = await fetch(url + '/games/delete/' + gid);
+        let data     = await response.json();
+        console.log(data);
+    } catch (error) {
+        console.error('Error fetching games:', error);
+    }
+
+}
 
 
 async function verify_game(gid, token) {

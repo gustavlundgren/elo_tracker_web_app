@@ -38,11 +38,11 @@
 </template>
 
 <script>
-    import { get_unverified, verify_game, delete_game} from '../api/index.js';
+    import {get_unverified, verify_game, delete_game} from '../api/index.js';
 
     export default {
         data() {
-            return get_unverified()
+            return await get_unverified()
         },
         computed: {
             // This computed property sorts the game history in descending order (recent first)
@@ -55,13 +55,13 @@
                 // Handle accepting the request (you can send an API call here to confirm)
                 console.log('Accepted:', request);
                 this.removeRequest(request);
-                verify_game();
+                await verify_game(request.id);
             },
             rejectRequest(request) {
                 // Handle rejecting the request (you can send an API call here to reject)
                 console.log('Rejected:', request);
                 this.removeRequest(request);
-                delete_game();
+                await delete_game(request.id);
             },
             removeRequest(request) {
                 // Remove the request from the pendingRequests array
