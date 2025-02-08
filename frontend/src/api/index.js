@@ -158,6 +158,17 @@ async function add_game(players, winner) {
     }
 }
 
+async function get_unverified(){
+    let uid = auth.currentUser.user.uid;
+    try {
+        let response = await fetch(url + '/games/unverified/' + uid);
+        let data = await response.json();
+        console.log(data);
+        return data
+    } catch (error) {
+        console.error('Error fetching player:', error);
+    }
+}
 
 
 async function get_player(uid) {
