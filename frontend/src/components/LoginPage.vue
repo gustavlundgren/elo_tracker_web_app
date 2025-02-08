@@ -18,32 +18,32 @@
 </template>
 
 <script>
-import { login } from "@/api/index.js"; // ✅ Import login function from /src/api/index.js
+    import { login } from "../api/index.js"; // ✅ Import login function from /src/api/index.js
 
-export default {
-    data() {
-        return {
-            email: '',
-            password: '',
-            errorMessage: ''
-        };
-    },
-    methods: {
-        async handleLogin() {
-            try {
-                await login(this.email, this.password); 
-                console.log("Login successful");
-                this.$router.push('/my-profile');
-            } catch (error) {
-                console.error('Login error:', error);
-                this.errorMessage = "Invalid email or password.";
-            }
+    export default {
+        data() {
+            return {
+                email: '',
+                password: '',
+                errorMessage: ''
+            };
         },
-        goToRegister() {
-            this.$router.push('/register');
+        methods: {
+            async handleLogin() {
+                try {
+                    await login(this.email, this.password); 
+                    console.log("Login successful");
+                    this.$router.push('/my-profile');
+                } catch (error) {
+                    console.error('Login error:', error);
+                    this.errorMessage = "Invalid email or password.";
+                }
+            },
+            goToRegister() {
+                this.$router.push('/register');
+            }
         }
-    }
-};
+    };
 </script>
 
 <style scoped>
