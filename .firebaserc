@@ -1,0 +1,11 @@
+{
+  "projects": {
+    "default": "biljard-elo"
+  },
+  "targets": {},
+  "etags": {
+    "biljard-elo": {
+      "extensionInstances": {}
+    }
+  }
+}
