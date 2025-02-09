@@ -124,6 +124,7 @@ async function get_game_by_uid(uid) {
         let response = await fetch(url + '/games/get/' + uid);
         let data = await response.json();
         console.log(data);
+        return data
     } catch (error) {
         console.error('Error fetching games:', error);
     }
@@ -138,6 +139,7 @@ async function get_games() {
         let response = await fetch(url + '/games/get');
         let data = await response.json();
         console.log(data);
+        return data
     } catch (error) {
         console.error('Error fetching games:', error);
     }
@@ -196,19 +198,33 @@ async function get_unverified() {
 }
 
 
-async function get_player(uid) {
+async function get_all_players() {
     try {
-        let response = await fetch(url + '/players/get/' + uid);
+        let response = await fetch(url + '/players/get/all');
         console.log(await response);
         let data = await response.json();
         console.log(data);
+        return data
     } catch (error) {
         console.error('Error fetching player:', error);
     }
 }
 
 
-export { add_game, new_player, new_user, get_game_by_uid, get_player, get_games, get_player_games, get_unverified, delete_game, login, verify_game }
+async function get_player(uid) {
+    try {
+        let response = await fetch(url + '/players/get/' + uid);
+        console.log(await response);
+        let data = await response.json();
+        console.log(data);
+        return data
+    } catch (error) {
+        console.error('Error fetching player:', error);
+    }
+}
+
+
+export { add_game, new_player, new_user, get_game_by_uid, get_player, get_games, get_player_games, get_unverified, delete_game, login, verify_game, get_all_players}
 
 //login("linda.bergstig@gmail.com", "password").then(() =>{ 
 //new_user("Pdiddy","linda.bergstig@gmail.com", "password")//});

@@ -224,6 +224,25 @@ def get_player(uid):
     
     return jsonify(player[0].to_dict()), 200
 
+
+#GET  
+#slighlt experimental
+@app.route('/api/players/get/all', methods=['GET'])
+def get_all_players():
+    """
+    Gets all players
+    """
+    try:
+        db = firestore.client()      
+        all_players = db.collection('players').get()
+    except Exception as e:
+        return jsonify({'error': str(e)})
+    
+    if not all_players:
+        return jsonify({'error': 'There are no players, somehow?'}), 404
+    
+    return jsonify(all_players.to_dict()), 200
+
 # POST
 @app.route('/api/players/new', methods=['POST'])
 def new_player():

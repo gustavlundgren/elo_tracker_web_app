@@ -13,32 +13,27 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      players: [
-        { id: 1, name: "Alice", elo: 1500 },
-        { id: 2, name: "Bob", elo: 1700 },
-        { id: 3, name: "Charlie", elo: 1600 },
-        { id: 4, name: "Dave", elo: 1800 }
-      ]
-    };
-  },
-  computed: {
-    sortedPlayers() {
-      return [...this.players].sort((a, b) => b.elo - a.elo); // Sort players based on ELO
+    import { get_all_players } from "../api/index.js"; 
+
+  export default {
+    data() {
+      return get_all_players()
+    },
+    computed: {
+      sortedPlayers() {
+        return [...this.players].sort((a, b) => b.elo - a.elo); // Sort players based on ELO
+      }
+    },
+    methods: {
+      // Function to return the class for 1st, 2nd, 3rd ranks
+      getRankClass(index) {
+        if (index === 0) return 'gold';  // 1st place
+        if (index === 1) return 'silver';  // 2nd place
+        if (index === 2) return 'bronze';  // 3rd place
+        return '';  // No specific class for others
+      }
     }
-  },
-  methods: {
-    // Function to return the class for 1st, 2nd, 3rd ranks
-    getRankClass(index) {
-      if (index === 0) return 'gold';  // 1st place
-      if (index === 1) return 'silver';  // 2nd place
-      if (index === 2) return 'bronze';  // 3rd place
-      return '';  // No specific class for others
-    }
-  }
-};
+  };
 </script>
 
 <style scoped>
