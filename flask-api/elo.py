@@ -157,7 +157,7 @@ def process_game():
     player_data = {}
     if players:
         for doc_id, player in players:
-            player_data[doc_id] = [player['elo'], player['username']]
+            player_data[doc_id] = [1000, player['username']]
 
 
 
