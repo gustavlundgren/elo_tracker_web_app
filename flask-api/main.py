@@ -5,6 +5,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from firebase_admin import initialize_app, firestore, auth
 from firebase_functions import https_fn
+from elo import process_game     
 import datetime
 
 
@@ -106,7 +107,7 @@ def verify_game():
             return jsonify({'error': 'Invalid user for verification'}), 403
         
         game_ref.update({"verified": True})
-        
+        process_game()
         return jsonify({'message': "Successfully verified the game" }), 200
     except Exception as e:
         return jsonify({'error': str(e)})
