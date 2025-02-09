@@ -19,15 +19,20 @@
 
 <script>
     import { login } from "../api/index.js";
-    import { authState } from './firebaseAuth'; 
+    import { authState } from '../components/firebaseAuth';
 
     export default {
-        data() {
+        computed: {
+            data() {
             return {
-                email: '',
-                password: '',
-                errorMessage: ''
-            };
+                    email: '',
+                    password: '',
+                    errorMessage: ''
+                };
+            },
+            user() {
+                return authState.user;
+            }
         },
         methods: {
             async handleLogin() {
@@ -43,6 +48,14 @@
             goToRegister() {
                 this.$router.push('/register');
             },
+        }, mounted() {
+            console.log(this.user);
+            console.log(authState);
+            
+
+            if(this.user) {
+                this.$router.push('/leaderboard')
+            }
         }
     };
 </script>
