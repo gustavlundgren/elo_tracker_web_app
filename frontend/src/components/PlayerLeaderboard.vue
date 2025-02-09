@@ -2,10 +2,10 @@
   <div class="leaderboard">
     <h2>< Player Leaderboard ></h2>
     <ul>
-      <li v-for="player in sortedPlayers" :key="player.uid">
+      <li v-for="(player, index) in sortedPlayers" :key="player.uid">
         <!-- Apply rank classes for coloring the rank number -->
         <span :class="getRankClass(index)" class="rank">#{{ index + 1 }}</span>
-        <span class="name">{{ player.name }}</span>
+        <span class="name">{{ player.username }}</span>
         <span class="elo">{{ player.elo }}</span>
       </li>
     </ul>
