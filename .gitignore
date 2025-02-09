@@ -84,3 +84,5 @@ Thumbs.db
 frontend/src/components/secret.js
 
 !package.json
+public/*
+frontend/src/api/firebase-config.js
