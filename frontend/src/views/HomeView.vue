@@ -1,9 +1,9 @@
 <script setup>
-import TheWelcome from '../components/PlayerLeaderboard.vue';
+import PlayerLeaderboard from '../components/PlayerLeaderboard.vue';
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    <PlayerLeaderboard />
   </main>
 </template>

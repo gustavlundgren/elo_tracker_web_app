@@ -38,7 +38,7 @@
 </template>
 
 <script>
-    import {get_unverified, verify_game, delete_game, get_player_games, get_player_games} from '../api/index.js';
+    import {get_unverified, verify_game, delete_game, get_player_games} from '../api/index.js';
 
     export default {
         data() {
