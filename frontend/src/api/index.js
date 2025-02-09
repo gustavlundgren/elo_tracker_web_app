@@ -8,7 +8,6 @@ var url = 'https://firebase-function-qwcbnzzvka-uc.a.run.app/api'
 // const app = initializeApp()
 
 const auth = getAuth(app)
-setPersistence(auth, browserSessionPersistence)
 
 async function delete_game(gid) {
     try {
@@ -90,10 +89,9 @@ async function new_user(username, email, pwd) {
 
 async function login(email, pwd) {
     try {
-        const result = await signInWithEmailAndPassword(auth, email, pwd);
-        auth.currentUser = result;
+        await setPersistence(auth, browserSessionPersistence);
+        result = await signInWithEmailAndPassword(auth, email, pwd);
 
-        console.log(auth.currentUser);
 
         const token = await result.user.getIdToken();
 
@@ -141,7 +139,7 @@ async function get_games() {
 }
 
 async function get_player_games() {
-    let uid  = auth.currentUser.uid;
+    let uid = auth.currentUser.uid;
     try {
         let response = await fetch(url + '/games/get/' + uid);
         let data = await response.json();
@@ -171,16 +169,7 @@ async function add_game(players, winner) {
 }
 
 async function get_unverified() {
-    let uid = ""
-
-    if (auth.currentUser != null) {
-        uid = auth.currentUser.uid;
-    }
-
-    if (uid.length < 1) {
-        console.log("error");
-        return { "error": "log in" };
-    }
+    let uid = auth.currentUser.uid
 
     try {
         let response = await fetch(url + '/games/unverified/' + uid);
@@ -219,7 +208,7 @@ async function get_player(uid) {
 }
 
 
-export { add_game, new_player, new_user, get_game_by_uid, get_player, get_games, get_player_games, get_unverified, delete_game, login, verify_game, get_all_players}
+export { add_game, new_player, new_user, get_game_by_uid, get_player, get_games, get_player_games, get_unverified, delete_game, login, verify_game, get_all_players }
 
 //login("linda.bergstig@gmail.com", "password").then(() =>{ 
 //new_user("Pdiddy","linda.bergstig@gmail.com", "password")//});

@@ -82,3 +82,5 @@ build/
 # Windows specific
 Thumbs.db
 frontend/src/components/secret.js
+
+!package.json
