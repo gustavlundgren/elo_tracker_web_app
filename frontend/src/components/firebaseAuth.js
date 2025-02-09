@@ -14,6 +14,13 @@ const auth = getAuth();
 onAuthStateChanged(auth, (user) => {
     authState.user = user; // Update the reactive user state
     authState.initialized = true; // Mark as initialized after the first check
+
+    auth.currentUser = user;
+
+    if (user) {
+        console.log("User: " + user.uid);
+        console.log(authState.initialized);
+    }
 });
 
 export const getCurrentUser = () => {
