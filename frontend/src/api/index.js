@@ -1,19 +1,14 @@
 //import { getMaxListeners } from "events";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, setPersistence, browserLocalPersistence, browserSessionPersistence } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, setPersistence, onAuthStateChanged, browserSessionPersistence } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 
 import app from "./firebase-config.js"
-// import pkg from 'firebase-admin';
-// import { config } from "process";
-// const { admin } = pkg;
-
 var url = 'https://firebase-function-qwcbnzzvka-uc.a.run.app/api'
 
 // const app = initializeApp()
 
 const auth = getAuth(app)
 setPersistence(auth, browserSessionPersistence)
-//const provider = new GoogleAuthProvider();
 
 async function delete_game(gid) {
     try {

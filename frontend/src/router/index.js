@@ -7,6 +7,8 @@ import LoginPage from '../components/LoginPage.vue'
 import RegisterPage from '../components/RegisterPage.vue'
 import Slots from '../components/Slots.vue'
 
+import { authState } from '../components/firebaseAuth';
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [

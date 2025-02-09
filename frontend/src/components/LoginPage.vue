@@ -18,7 +18,8 @@
 </template>
 
 <script>
-    import { login } from "../api/index.js"; // ✅ Import login function from /src/api/index.js
+    import { login } from "../api/index.js";
+    import { authState } from './firebaseAuth'; 
 
     export default {
         data() {
@@ -41,7 +42,7 @@
             },
             goToRegister() {
                 this.$router.push('/register');
-            }
+            },
         }
     };
 </script>
