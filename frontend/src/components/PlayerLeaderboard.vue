@@ -17,7 +17,9 @@
 
   export default {
     data() {
-      return []
+      return {
+        players: []
+      };
     },
     async created() {
       try {
@@ -27,7 +29,7 @@
       }
     },
     computed: {
-      sortedPlayers() {
+      async sortedPlayers() {
         return [...this.players].sort((a, b) => b.elo - a.elo);
       }
     },
@@ -42,6 +44,7 @@
     }
   };
 </script>
+
 
 <style scoped>
 .leaderboard {
