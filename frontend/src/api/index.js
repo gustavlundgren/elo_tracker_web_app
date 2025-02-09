@@ -143,11 +143,13 @@ async function get_games() {
     }
 }
 
-async function get_player_games(uid) {
+async function get_player_games() {
+    let uid  = auth.currentUser.uid;
     try {
         let response = await fetch(url + '/games/get/' + uid);
         let data = await response.json();
         console.log(data);
+        return data
     } catch (error) {
         console.error('Error fetching player games:', error);
     }
