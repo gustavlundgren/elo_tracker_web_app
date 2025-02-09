@@ -241,7 +241,7 @@ def get_all_players():
     if not all_players:
         return jsonify({'error': 'There are no players, somehow?'}), 404
     
-    return jsonify(all_players.to_dict()), 200
+    return jsonify([p.to_dict() for p in all_players]), 200
 
 # POST
 @app.route('/api/players/new', methods=['POST'])
