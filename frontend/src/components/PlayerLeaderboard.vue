@@ -1,19 +1,22 @@
 <template>
-  <div class="leaderboard">
-    <h2>< Player Leaderboard ></h2>
+  <div class="leaderboard"> 
+    <h2>Player Leaderboard</h2>
     <ul>
       <li v-for="(player, index) in sortedPlayers" :key="player.uid">
-        <!-- Apply rank classes for coloring the rank number -->
+        
         <span :class="getRankClass(index)" class="rank">#{{ index + 1 }}</span>
         <span class="name">{{ player.username }}</span>
         <span class="elo">{{ player.elo }}</span>
       </li>
     </ul>
-  </div>
+  </div> 
+  
+
 </template>
 
 <script>
     import { get_all_players } from "../api/index.js"; 
+    import { toRaw } from 'vue'; // Import toRaw if needed
 
   export default {
     data() {
@@ -23,18 +26,27 @@
     },
     async created() {
       try {
-        this.players = await get_all_players();
+        const playersData = await get_all_players();
+        this.players = toRaw(playersData);
       } catch (error) {
         console.error("Error fetching players:", error);
       }
     },
+    watch: {
+      players() {
+        console.log("currenly peepeing poopeo")        
+      }
+    },
     computed: {
-      async sortedPlayers() {
-        return [...this.players].sort((a, b) => b.elo - a.elo);
+      sortedPlayers() {
+        console.log("javascript suck")
+        if (this.players) {
+          return [...this.players].sort((a, b) => b.elo - a.elo);
+        }
+
       }
     },
     methods: {
-      // Function to return the class for 1st, 2nd, 3rd ranks
       getRankClass(index) {
         if (index === 0) return 'gold';  // 1st place
         if (index === 1) return 'silver';  // 2nd place
