@@ -17,11 +17,18 @@
 
   export default {
     data() {
-      return get_all_players()
+      return []
+    },
+    async created() {
+      try {
+        this.players = await get_all_players();
+      } catch (error) {
+        console.error("Error fetching players:", error);
+      }
     },
     computed: {
       sortedPlayers() {
-        return [...this.players].sort((a, b) => b.elo - a.elo); // Sort players based on ELO
+        return [...this.players].sort((a, b) => b.elo - a.elo);
       }
     },
     methods: {
