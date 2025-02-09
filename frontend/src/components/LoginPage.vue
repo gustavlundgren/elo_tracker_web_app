@@ -31,7 +31,7 @@
         methods: {
             async handleLogin() {
                 try {
-                    await login(this.email, this.password); 
+                     login(this.email, this.password); 
                     console.log("Login successful");
                     this.$router.push('/my-profile');
                 } catch (error) {

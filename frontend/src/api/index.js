@@ -1,22 +1,24 @@
 //import { getMaxListeners } from "events";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
-
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, setPersistence, browserLocalPersistence, browserSessionPersistence } from "firebase/auth";
+import { initializeApp } from "firebase/app";
 
 import app from "./firebase-config.js"
-import pkg from 'firebase-admin';
-//import { config } from "process";
-const { admin } = pkg;
+// import pkg from 'firebase-admin';
+// import { config } from "process";
+// const { admin } = pkg;
 
-var url = 'http://localhost:5000/api'
+var url = 'https://firebase-function-qwcbnzzvka-uc.a.run.app/api'
 
+// const app = initializeApp()
 
-const auth = getAuth(app);
+const auth = getAuth(app)
+setPersistence(auth, browserSessionPersistence)
 //const provider = new GoogleAuthProvider();
 
-async function delete_game(gid){
+async function delete_game(gid) {
     try {
         let response = await fetch(url + '/games/delete/' + gid);
-        let data     = await response.json();
+        let data = await response.json();
         console.log(data);
     } catch (error) {
         console.error('Error fetching games:', error);
@@ -96,6 +98,7 @@ async function login(email, pwd) {
         const result = await signInWithEmailAndPassword(auth, email, pwd);
         auth.currentUser = result;
 
+        console.log(auth.currentUser);
 
         const token = await result.user.getIdToken();
 
@@ -168,8 +171,18 @@ async function add_game(players, winner) {
     }
 }
 
-async function get_unverified(){
-    let uid = auth.currentUser.user.uid;
+async function get_unverified() {
+    let uid = ""
+
+    if (auth.currentUser != null) {
+        uid = auth.currentUser.uid;
+    }
+
+    if (uid.length < 1) {
+        console.log("error");
+        return { "error": "log in" };
+    }
+
     try {
         let response = await fetch(url + '/games/unverified/' + uid);
         let data = await response.json();
@@ -192,6 +205,8 @@ async function get_player(uid) {
     }
 }
 
+
+export { add_game, new_player, new_user, get_game_by_uid, get_player, get_games, get_player_games, get_unverified, delete_game, login, verify_game }
 
 //login("linda.bergstig@gmail.com", "password").then(() =>{ 
 //new_user("Pdiddy","linda.bergstig@gmail.com", "password")//});

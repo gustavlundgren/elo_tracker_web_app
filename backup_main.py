@@ -1,14 +1,25 @@
-from flask import Blueprint, jsonify, request
-from main import db
-from firebase_admin import auth
+# Welcome to Cloud Functions for Firebase for Python!
+# To get started, simply uncomment the below code or create your own.
+# Deploy with `firebase deploy`
+from flask import Flask, jsonify, request
+from flask_cors import CORS
+from firebase_admin import initialize_app, firestore, auth
+import functions_framework
 import datetime
-from src.elo import process_game
 
-routes_blueprint = Blueprint('routes', __name__)
+
+app = Flask(__name__)
+CORS(app)
+
+# Initialize Firebase
+#cred = credentials.Certificate("/home/lundgren/elo_tracker_web_app/serviceAccountKey.json")
+initialize_app() # Cred for local
+db = firestore.client()
+
 
 # Game routes
 # GET
-@routes_blueprint.route('/api/games/get', methods=['GET'])
+@app.route('/api/games/get', methods=['GET'])
 def get_games():
     """
     Get all the games from the database
@@ -21,7 +32,7 @@ def get_games():
     except Exception as e:
         return jsonify({'error': str(e)})
     
-@routes_blueprint.route('/api/games/player/<uid>', methods=['GET'])
+@app.route('/api/games/player/<uid>', methods=['GET'])
 def get_player_games(uid):
     """
     Get all the games that macth the given uid 
@@ -32,7 +43,7 @@ def get_player_games(uid):
     except Exception as e:
         return jsonify({'error': str(e)})
 
-@routes_blueprint.route('/api/games/unverified/<uid>')
+@app.route('/api/games/unverified/<uid>')
 def get_unverfied_games(uid):
     """
     Get all the unverified games for a player uid
@@ -44,7 +55,7 @@ def get_unverfied_games(uid):
         return jsonify({'error': str(e)})
 # POST
 
-@routes_blueprint.route('/api/games/verify', methods=['POST'])
+@app.route('/api/games/verify', methods=['POST'])
 def verify_game():
     """
     Verify a game
@@ -90,7 +101,7 @@ def verify_game():
     except Exception as e:
         return jsonify({'error': str(e)})
         
-@routes_blueprint.route('/api/games/add', methods=['POST'])
+@app.route('/api/games/add', methods=['POST'])
 def add_game():
     """
     Add a new game to the datatbase
@@ -140,7 +151,7 @@ def add_game():
         return jsonify({'error': str(e)})    
 
 # DELETE
-@routes_blueprint.route('/api/games/delete/<gid>', methods=['DELETE'])
+@app.route('/api/games/delete/<gid>', methods=['DELETE'])
 def delete_game(gid):
     data = request.json
     token = data.get('token')
@@ -179,7 +190,7 @@ def delete_game(gid):
 
 # Players
 #GET  
-@routes_blueprint.route('/api/players/get/<uid>', methods=['GET'])
+@app.route('/api/players/get/<uid>', methods=['GET'])
 def get_player(uid):
     """
     Get a player with a given uid
@@ -195,7 +206,7 @@ def get_player(uid):
     return jsonify(player[0].to_dict()), 200
 
 # POST
-@routes_blueprint.route('/api/players/new', methods=['POST'])
+@app.route('/api/players/new', methods=['POST'])
 def new_player():
     """
     Create a new player with a username and a reference to the uid of a valid user
@@ -226,3 +237,35 @@ def new_player():
         
     except Exception as e:
         return jsonify({'error': str(e)})
+
+# Auth
+@app.route('/api/auth', methods=['POST'])
+def login():
+    data = request.json
+    token = data.get('token')
+    email = data.get('email')
+    
+    if not token:
+        return jsonify({'error': 'Token is needed'}), 401
+    
+    if not email:
+        return jsonify({'error': 'Email needed'}), 401
+    
+    try:
+        decoded_token = auth.verify_id_token(token)
+        
+        if decoded_token['email'] != email:
+            return jsonify({'error': 'Incorrect token for this user'}), 401
+        
+        return jsonify({'uid': decoded_token['uid']}), 200
+    except Exception as e:
+        print(str(e))
+        return jsonify({'error': str(e)}), 401
+
+@app.route('/', methods=['GET'])
+def hello():
+    return "Hello world"
+
+@functions_framework.http
+def functions(request):
+    return app(request) 

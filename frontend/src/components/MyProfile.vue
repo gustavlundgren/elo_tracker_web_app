@@ -42,7 +42,7 @@
 
     export default {
         data() {
-            return await get_unverified()
+            return get_unverified()
         },
         computed: {
             // This computed property sorts the game history in descending order (recent first)
@@ -55,13 +55,13 @@
                 // Handle accepting the request (you can send an API call here to confirm)
                 console.log('Accepted:', request);
                 this.removeRequest(request);
-                await verify_game(request.id);
+                 verify_game(request.id);
             },
             rejectRequest(request) {
                 // Handle rejecting the request (you can send an API call here to reject)
                 console.log('Rejected:', request);
                 this.removeRequest(request);
-                await delete_game(request.id);
+                 delete_game(request.id);
             },
             removeRequest(request) {
                 // Remove the request from the pendingRequests array

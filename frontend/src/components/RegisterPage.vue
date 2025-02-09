@@ -22,32 +22,32 @@
 </template>
 
 <script>
-  import { new_user } from "../api/index.js";
+import { new_user } from "../api/index.js";
 
-  export default {
-    data() {
-      return {
-        username: '',
-        password: '',
-        email: ''
-      };
-    },
-    methods: {
-      handleRegister() {
-        console.log('Username:', this.username);
-        console.log('Password:', this.password);
-        console.log('Email:', this.email);
-        await new_user(this.username, this.email, this.password);
-      }
+export default {
+  data() {
+    return {
+      username: '',
+      password: '',
+      email: ''
+    };
+  },
+  methods: {
+    handleRegister() {
+      console.log('Username:', this.username);
+      console.log('Password:', this.password);
+      console.log('Email:', this.email);
+      new_user(this.username, this.email, this.password);
     }
-  };
+  }
+};
 </script>
 
 <style>
 .register-page {
   max-width: 400px;
   margin: 0 auto;
-  padding: 20px;  
+  padding: 20px;
   background-color: #1e1e1e;
   border-radius: 5px;
   color: white;
@@ -56,12 +56,14 @@
 .form-group {
   margin-bottom: 15px;
   display: flex;
-  flex-direction: column; /* Stack label above input */
+  flex-direction: column;
+  /* Stack label above input */
 }
 
 label {
   font-weight: bold;
-  margin-bottom: 5px; /* Space between label and input */
+  margin-bottom: 5px;
+  /* Space between label and input */
 }
 
 input {
@@ -83,7 +85,7 @@ input:focus {
   width: 100%;
   padding: 10px;
   background-color: #bb86fc;
-  color: white;   
+  color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;

@@ -43,7 +43,7 @@ from index.js
       methods: {
         async submitForm() {
           try {
-            await add_game([this.opponent, this.winner], this.winner);
+             add_game([this.opponent, this.winner], this.winner);
             console.log(`Game added: Opponent - ${this.opponent}, Winner - ${this.winner}`);
             this.opponent = '';
             this.winner = '';
@@ -53,9 +53,7 @@ from index.js
         }
       },
     };
-    document.getElementById(submit_button).onclick({
-
-    })
+    // document.getElementById("submit_button").onClick({})
   
   </script>
   
