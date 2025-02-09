@@ -1,15 +1,14 @@
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../api/firebase-config.js";
 import { reactive } from "vue";
 import router from "../router/index"
+
 
 // Create a reactive object to track the current user
 export const authState = reactive({
     user: null,
     initialized: false,
 });
-
-// Initialize Firebase Authentication
-const auth = getAuth();
 
 // Listen for auth state changes
 onAuthStateChanged(auth, (user) => {

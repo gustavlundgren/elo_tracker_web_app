@@ -1,13 +1,13 @@
 //import { getMaxListeners } from "events";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, setPersistence, onAuthStateChanged, browserSessionPersistence } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, setPersistence } from "firebase/auth";
 import { initializeApp } from "firebase/app";
-
-import app from "./firebase-config.js"
 var url = 'https://firebase-function-qwcbnzzvka-uc.a.run.app/api'
 
 // const app = initializeApp()
+// setPersistence(auth, browserSessionPersistence);
 
-const auth = getAuth(app)
+// const auth = getAuth(app)
+import { auth } from "../api/firebase-config.js";
 
 async function delete_game(gid) {
     try {
@@ -89,7 +89,6 @@ async function new_user(username, email, pwd) {
 
 async function login(email, pwd) {
     try {
-        await setPersistence(auth, browserSessionPersistence);
         result = await signInWithEmailAndPassword(auth, email, pwd);
 
 
@@ -141,7 +140,7 @@ async function get_games() {
 async function get_player_games() {
     let uid = auth.currentUser.uid;
     try {
-        let response = await fetch(url + '/games/get/' + uid);
+        let response = await fetch(url + '/games/player/' + uid);
         let data = await response.json();
         console.log(data);
         return data

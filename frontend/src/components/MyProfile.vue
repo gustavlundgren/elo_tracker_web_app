@@ -24,7 +24,7 @@
         <h1 style="font-weight: bold; font-style: italic; font-size: 20px; margin-bottom: 15px;">Pending Requests</h1>
 
         <!-- Show pending requests or "You have no pending game requests." -->
-        <div v-if="pendingRequests.length === 0">
+        <div v-if="unverified.length === 0">
             <p>You have no pending game requests.</p>
         </div>
         <ul v-else>
@@ -38,41 +38,59 @@
 </template>
 
 <script>
-    import {get_unverified, verify_game, delete_game, get_player_games} from '../api/index.js';
+import { toRaw } from 'vue';
+import { get_unverified, verify_game, delete_game, get_player_games } from '../api/index.js';
 
-    export default {
-        data() {
-            return {
-                unverified: [],
-                playerGames: [],
-            };
-        },
-        async created() {
-            this.unverified  = await get_unverified();
-            this.playerGames = await get_player_games();
-            console.log([this.unverified, this.playerGames]);
-        },
-        computed: {
-            sortedGameHistory() {
-                return this.game_history.slice().reverse();
-            }
-        },
-        methods: {
-            acceptRequest(request) {
-                console.log('Accepted:', request);
-                this.removeRequest(request);
-                verify_game(request.id);
-            },
-            rejectRequest(request) {
-                console.log('Rejected:', request);
-                this.removeRequest(request);
-                delete_game(request.id);
-            },
-            removeRequest(request) {
-                this.pendingRequests = this.pendingRequests.filter(r => r.id !== request.id);
-            }
+export default {
+    data() {
+        return {
+            unverified: [],       // For storing unverified games
+            playerGames: [],      // For storing player game history
+        };
+    },
+    
+    
+    async created() {
+        // Fetch initial data when component is created
+        try {
+            const pg = await get_player_games()
+            const ug = await get_unverified()
+            
+            this.unverified = toRaw(ug);
+            this.playerGames = toRaw(pg);
+            console.log(this.unverified);
+            console.log(this.playerGames);
+        } catch (err) {
+            console.log(err);
         }
-    };
+        
+    },
+    computed: {
+        sortedGameHistory() {
+            // Ensure that playerGames is an array before applying reverse
+            if (this.playerGames && Array.isArray(this.playerGames)) {
+                return this.playerGames.slice().reverse(); // Reverse the game history array
+            }
+            return []; // Return an empty array if playerGames is not available
+        }
+    },
+    methods: {
+        acceptRequest(request) {
+            console.log('Accepted:', request);
+            this.removeRequest(request);
+            verify_game(request.id); // Replace with actual game verification logic
+        },
+        rejectRequest(request) {
+            console.log('Rejected:', request);
+            this.removeRequest(request);
+            delete_game(request.id); // Replace with actual game deletion logic
+        },
+        removeRequest(request) {
+            // Remove the request from pendingRequests
+            this.pendingRequests = this.pendingRequests.filter(r => r.id !== request.id);
+        }
+    }
+};
 </script>
 
 <style scoped>
