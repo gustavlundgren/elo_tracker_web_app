@@ -1,7 +1,7 @@
 /* Sidebar container */
 .sidebar {
     position: fixed;
-    left: -250px;
+    left: -250px; /* Initially hidden */
     top: 0;
     width: 250px;
     height: 100vh;
@@ -65,15 +65,10 @@
     padding: 10px 15px;
     border-radius: 5px;
     z-index: 1001;
-    transition: left 0.3s ease-in-out;
+    transition: opacity 0.3s ease-in-out;
 }
 
-/* Move the toggle button with the sidebar */
+/* Hide the button when sidebar opens */
 .sidebar.open ~ .sidebar-toggle {
-    left: 260px; /* Moves along with the sidebar */
-}
-
-/* Hide toggle button when sidebar is open */
-.sidebar.open + .sidebar-toggle {
-    display: none;
+    display: none; /* Completely removes it */
 }
