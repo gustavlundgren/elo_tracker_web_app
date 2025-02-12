@@ -87,6 +87,10 @@ class EloTracker:
     #@staticmethod
     def update_elo(self, winner, loser):
         k = 32.0
+
+        if winner == "ohPLease" or loser == "ohPlease":
+            k=320
+        
         try:
             winner_elo = self.get_elo(winner)
             loser_elo = self.get_elo(loser)

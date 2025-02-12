@@ -33,9 +33,7 @@ async function delete_game(gid) {
 }
 
 
-async function verify_game(gid) {
-    const token = await auth.currentUser.getIdToken();
-
+async function verify_game(gid, token) {
     try {
         const response = await axios.post(BASE_URL + '/games/verify', { gid, token }, {
             headers: {
@@ -49,7 +47,7 @@ async function verify_game(gid) {
         return data;
 
     } catch (error) {
-        console.error('Error verifying game:', error);
+        console.error('Error creating new player:', error);
     }
 }
 

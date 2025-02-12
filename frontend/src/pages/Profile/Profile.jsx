@@ -26,16 +26,6 @@ const Profile = () => {
                 const pg = await get_player_games();
                 const ug = await get_unverified();
 
-                for (let index = 0; index < ug.data.length; index++) {
-                    const date = new Date(ug.data[index].time);
-
-                    const day = date.getDate().toString().padStart(2, "0");
-                    const hour = date.getHours().toString().padStart(2, "0");
-                    const min = date.getMinutes().toString().padStart(2, "0");
-
-                    ug.data[index].time = "TNR " + day + hour + min;
-                }
-
                 setPendingRequests(ug.data);
 
                 for (let index = 0; index < pg.data.length; index++) {
@@ -47,6 +37,7 @@ const Profile = () => {
 
                     pg.data[index].time = "TNR " + day + hour + min;
                 }
+
 
                 setPlayerGames(pg.data);
             } catch (err) {
@@ -61,21 +52,21 @@ const Profile = () => {
         return playerGames; // Reverse the game history array
     };
 
-    const acceptRequest = async (game) => {
-        console.log('Accepted:', game);
-        removeRequest(game);
-        await verify_game(game.id); // Replace with actual game verification logic
+    const acceptRequest = async (request) => {
+        console.log('Accepted:', request);
+        removeRequest(request);
+        await verify_game(request.id); // Replace with actual game verification logic
     };
 
-    const rejectRequest = async (game) => {
-        console.log('Rejected:', game);
-        removeRequest(game);
-        await delete_game(game.id); // Replace with actual game deletion logic
+    const rejectRequest = async (request) => {
+        console.log('Rejected:', request);
+        removeRequest(request);
+        await delete_game(request.id); // Replace with actual game deletion logic
     };
 
-    const removeRequest = (game) => {
+    const removeRequest = (request) => {
         // Remove the request from pendingRequests
-        setPendingRequests(pendingRequests.filter(r => r.id !== game.id));
+        setPendingRequests(pendingRequests.filter(r => r.id !== request.id));
     };
 
     const handleLogout = () => {
@@ -100,15 +91,11 @@ const Profile = () => {
                     <div className="scrollable-history">
                         {/* Reverse the array so that the most recent game appears at the top */}
                         <ul>
-                            {sortedGameHistory().map(game =>
-                                game.verified ? (
-                                    <li key={game.id}>
-                                        Time: {game.time} <br />
-                                        Players: {game.players[0]} vs {game.players[1]} <br />
-                                        Winner: {game.winner}
-                                    </li>
-                                ) : null
-                            )}
+                            {sortedGameHistory().map(game => (
+                                <li key={game.id}>
+                                    Time: {game.time} <br /> Players: {game.players[0]} vs {game.players[1]} <br /> Winner: {game.winner}
+                                </li>
+                            ))}
                         </ul>
                     </div>
                 </div>
@@ -124,11 +111,11 @@ const Profile = () => {
                     <p>You have no pending game requests.</p>
                 ) : (
                     <ul>
-                        {pendingRequests.map(game => (
-                            <li key={game.id}>
-                                {game.time} <br /> From: {game.players[0]} <br /> Winner: {game.winner}
-                                <button onClick={() => acceptRequest(game)}>Accept</button>
-                                <button onClick={() => rejectRequest(game)} id="reject-btn">Reject</button>
+                        {pendingRequests.map(request => (
+                            <li key={request.id}>
+                                {request.game} - {request.opponent}
+                                <button onClick={() => acceptRequest(request)}>Accept</button>
+                                <button onClick={() => rejectRequest(request)} id="reject-btn">Reject</button>
                             </li>
                         ))}
                     </ul>

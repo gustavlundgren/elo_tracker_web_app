@@ -11,12 +11,12 @@ const LoginPage = () => {
 
   const navigate = useNavigate()
 
-  // useEffect(() => {
-  //   // Add history
-  //   if (auth.currentUser) {
-  //     navigate("/")
-  //   }
-  // })
+  useEffect(() => {
+    // Add history
+    if (auth.currentUser) {
+      navigate("/")
+    }
+  })
 
   const handleLogin = async (e) => {
     e.preventDefault();
