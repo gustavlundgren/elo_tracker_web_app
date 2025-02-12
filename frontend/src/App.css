@@ -4,7 +4,14 @@
   padding: 2rem;
   text-align: center;
 }
-
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #121212; 
+  margin: 0;
+}
 .logo {
   height: 6em;
   padding: 1.5em;
