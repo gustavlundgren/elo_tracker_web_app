@@ -5,7 +5,11 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from firebase_admin import initialize_app, firestore, auth
 from firebase_functions import https_fn
+<<<<<<< HEAD
 from elo import process_game     
+=======
+from elo import EloTracker, Game     
+>>>>>>> 142fe0d9 (bug fixes)
 import datetime
 
 
@@ -15,6 +19,50 @@ initialize_app() # Cred for local
 
 app = Flask(__name__)
 CORS(app)
+
+# ELO
+def process_game():
+    db = firestore.client()
+    doc_games_ref = db.collection("games")
+        
+    games = [doc.to_dict() for doc in doc_games_ref.get()]
+
+    verified_games=[]
+
+
+    if games:
+        for game in games:
+            if game['verified']:
+                players = game['players']
+                winner = game['winner']
+                if players[0] == winner:
+                    loser = players[1]
+                else:
+                    loser = players[0]
+                    pass
+                verified_games.append(Game(winner, loser, game['time']))
+
+    doc_players_ref = db.collection("players")
+
+    players = [(doc.id, doc.to_dict()) for doc in doc_players_ref.get()]
+
+    player_data = {}
+    if players:
+        for doc_id, player in players:
+            player_data[doc_id] = [1000, player['username']]
+
+
+
+    elo_tracker = EloTracker(player_data)
+    elo_tracker.process_games(verified_games)
+
+
+
+    for doc_id, new_elo in player_data.items():
+        player_ref = db.collection("players").document(doc_id)
+
+        #print(player_ref.get())
+        player_ref.update({'elo': new_elo[0]})
 
 # Game routes
 # GET
@@ -58,8 +106,10 @@ def get_unverfied_games(uid):
     try:
         db = firestore.client()
         
-        docs = db.collection('players').where('uid', '==', uid).where('verified', '==', False).get()
-        return jsonify({'data': [doc.to_dict() for doc in docs]}), 200
+        username = db.collection('players').where('uid', '==', uid).get()[0].to_dict()['username']
+        docs = db.collection('games').where("players", "array_contains", username).where("verified", "==", False).get()
+        
+        return jsonify({'data': [doc.to_dict() for doc in docs if doc.to_dict().get("players", [])[1] == username]}), 200
     except Exception as e:
         return jsonify({'error': str(e)})
 # POST
@@ -151,7 +201,11 @@ def add_game():
         auth.verify_id_token(token)
         
         # Add the new game to the collection
-        db.collection('games').add({
+        game_ref = db.collection('games').document()
+        gid = game_ref.id
+        
+        game_ref.set({
+            'id': gid,
             'players': players, 
             'winner': winner, 
             'time': datetime.datetime.now(datetime.timezone.utc).timestamp(),

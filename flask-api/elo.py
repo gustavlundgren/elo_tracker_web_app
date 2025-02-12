@@ -87,10 +87,13 @@ class EloTracker:
     #@staticmethod
     def update_elo(self, winner, loser):
         k = 32.0
+<<<<<<< HEAD
 
         if winner == "ohPLease" or loser == "ohPlease":
             k=320
         
+=======
+>>>>>>> 142fe0d9 (bug fixes)
         try:
             winner_elo = self.get_elo(winner)
             loser_elo = self.get_elo(loser)
@@ -174,4 +177,8 @@ def process_game():
         player_ref = db.collection("players").document(doc_id)
 
         #print(player_ref.get())
+<<<<<<< HEAD
         player_ref.update({'elo': new_elo[0]})
+=======
+        player_ref.update({'elo': new_elo[0]})
+>>>>>>> 142fe0d9 (bug fixes)
