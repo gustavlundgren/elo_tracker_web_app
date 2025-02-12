@@ -5,11 +5,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from firebase_admin import initialize_app, firestore, auth
 from firebase_functions import https_fn
-<<<<<<< HEAD
-from elo import process_game     
-=======
 from elo import EloTracker, Game     
->>>>>>> 142fe0d9 (bug fixes)
 import datetime
 
 
