@@ -22,7 +22,7 @@ const Sidebar = () => {
                     <ul>
                         <li><Link to="/" onClick={() => setIsOpen(false)}>Leaderboard</Link></li>
                         <li><Link to="/game/add" onClick={() => setIsOpen(false)}>Add Game</Link></li>
-                        <li><Link to="/login" onClick={() => setIsOpen(false)}>Profile</Link></li>
+                        <li><Link to="/my-profile" onClick={() => setIsOpen(false)}>Profile</Link></li>
                     </ul>
                 </nav>
             </div>
