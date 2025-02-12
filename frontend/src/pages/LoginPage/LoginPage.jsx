@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { login } from '../../api/index.js';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './LoginPage.css'
 import { auth } from '../../api/firebase-config.js';
 
@@ -9,14 +9,22 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     // Add history
-    if (auth.currentUser) {
-      navigate("/")
-    }
-  })
+
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      if (currentUser) {
+        // If the user is logged in redirect to homepage
+        navigate(location.state?.from || "/");
+      }
+    })
+
+    return () => unsubscribe();
+
+  }, [])
 
   const handleLogin = async (e) => {
     e.preventDefault();

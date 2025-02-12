@@ -71,7 +71,7 @@ const Profile = () => {
 
     const handleLogout = () => {
         logout();
-        navigate("/login")
+        navigate("/login", { state: { from: location.pathname } })
     };
 
     return (

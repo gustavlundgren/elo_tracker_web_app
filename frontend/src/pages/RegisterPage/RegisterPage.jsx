@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { new_user } from "../../api/index.js";
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { auth } from '../../api/firebase-config.js';
 
 const RegisterPage = () => {
@@ -8,6 +8,7 @@ const RegisterPage = () => {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleRegister = async (event) => {
         event.preventDefault();  // Prevent the form from submitting the traditional way
@@ -24,10 +25,15 @@ const RegisterPage = () => {
     };
 
     useEffect(() => {
-        if (auth.currentUser) {
-            navigate("/")
-        }
-    })
+        const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+            if (currentUser) {
+                // If the user is logged in redirect to homepage
+                navigate(location.state?.form || "/");
+            }
+        })
+
+        return () => unsubscribe();
+    }, [])
 
     return (
         <div className="register-page">
