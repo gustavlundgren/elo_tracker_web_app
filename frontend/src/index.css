@@ -72,3 +72,23 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+.app-container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+  margin-left: 250px; 
+}
+
+.no-sidebar .content {
+  margin-left: 0;
+}
+

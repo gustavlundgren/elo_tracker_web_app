@@ -1,0 +1,79 @@
+/* Sidebar container */
+.sidebar {
+    position: fixed;
+    left: -250px;
+    top: 0;
+    width: 250px;
+    height: 100vh;
+    background-color: #1e1e1e;
+    color: white;
+    padding-top: 20px;
+    transition: left 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+/* When sidebar is open */
+.sidebar.open {
+    left: 0;
+}
+
+/* Close button */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Sidebar links */
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar li {
+    padding: 15px;
+    text-align: center;
+}
+
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    display: block;
+}
+
+.sidebar a:hover {
+    background-color: #bb86fe;
+    border-radius: 5px;
+}
+
+/* Sidebar toggle button */
+.sidebar-toggle {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    background: #bb86fe;
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 5px;
+    z-index: 1001;
+    transition: left 0.3s ease-in-out;
+}
+
+/* Move the toggle button with the sidebar */
+.sidebar.open ~ .sidebar-toggle {
+    left: 260px; /* Moves along with the sidebar */
+}
+
+/* Hide toggle button when sidebar is open */
+.sidebar.open + .sidebar-toggle {
+    display: none;
+}
