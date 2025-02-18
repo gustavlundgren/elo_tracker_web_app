@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { add_game } from '../../api/index.js';
+import { add_game, get_player_for_user } from '../../api/index.js';
 import './AddGame.css'
 
 const AddGame = () => {
@@ -8,14 +8,33 @@ const AddGame = () => {
 
     const submitForm = async (e) => {
         e.preventDefault();
-        try {
-            await add_game([opponent, winner], winner);
-            console.log(`Game added: Opponent - ${opponent}, Winner - ${winner}`);
-            setOpponent('');
-            setWinner('');
-        } catch (error) {
-            console.error("Error adding game:", error);
+
+        try{
+            const currUser = await get_player_for_user()
+            try {
+                const response = await add_game([opponent, currUser.username], winner);
+    
+                if (response.status === 400){
+                    alert("Error: " + response.data.error)
+                }else{
+                    console.log(`Game added: Opponent - ${opponent}, Winner - ${winner}`);
+                    setOpponent('');
+                    setWinner('');
+                    alert("Game added succsesfully!")
+                }      
+    
+                console.log(response.status )
+            } catch (error) {
+                alert(error)
+                console.error("Error adding game:", error);
+            }
+        }catch(error){
+            console.error("Error finding user:", error);
+
         }
+
+
+        
     };
 
     return (

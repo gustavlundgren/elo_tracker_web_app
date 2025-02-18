@@ -35,7 +35,7 @@ const Leaderboard = () => {
                     <li key={player.uid}>
                         <span className={`rank ${getRankClass(index)}`}>#{index + 1}</span>
                         <span className="name">{player.username}</span>
-                        <span className="elo">{player.elo}</span>
+                        <span className="elo">{Math.round(player.elo*10)/10}</span>
                     </li>
                 ))}
             </ul>

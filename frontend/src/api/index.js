@@ -16,7 +16,7 @@ async function get_player_for_user() {
         return response;
 
     } catch (err) {
-        console.log(err);
+        console.log(err.response.data.error);
 
     }
 }
@@ -27,7 +27,7 @@ async function delete_game(gid) {
         let data = response.data;
         console.log(data);
     } catch (error) {
-        console.error('Error fetching games:', error);
+        console.error('Error fetching games:', error.response.data.error);
     }
 
 }
@@ -47,7 +47,7 @@ async function verify_game(gid, token) {
         return data;
 
     } catch (error) {
-        console.error('Error creating new player:', error);
+        console.error('Error creating new player:', error.response.data.error);
     }
 }
 
@@ -64,7 +64,7 @@ async function new_player(username, token) {
         console.log(data);
 
     } catch (error) {
-        console.error('Error creating new player:', error);
+        console.error('Error creating new player:', error.response.data.error);
     }
 }
 
@@ -87,7 +87,7 @@ async function new_user(username, email, pwd) {
         console.log(data);
         new_player(username, token);
     } catch (error) {
-        console.error('Error creating new user:', error);
+        console.error('Error creating new user:', error.response.data.error);
     }
 }
 
@@ -108,7 +108,7 @@ async function login(email, pwd) {
         console.log(data);
         return data
     } catch (error) {
-        console.error('Error during login:', error);
+        console.error('Error during login:', error.response.data.error);
     }
 }
 
@@ -116,7 +116,7 @@ async function logout() {
     try {
         await auth.signOut()
     } catch (err) {
-        console.log(err);
+        console.log(err.response.data.error);
     }
 }
 
@@ -129,7 +129,7 @@ async function get_game_by_uid(uid) {
         console.log(data);
         return data
     } catch (error) {
-        console.error('Error fetching games:', error);
+        console.error('Error fetching games:', error.response.data.error);
     }
 }
 
@@ -141,7 +141,7 @@ async function get_games() {
         console.log(data);
         return data
     } catch (error) {
-        console.error('Error fetching games:', error);
+        console.error('Error fetching games:', error.response.data.error);
     }
 }
 
@@ -153,13 +153,14 @@ async function get_player_games() {
         console.log(data);
         return data
     } catch (error) {
-        console.error('Error fetching player games:', error);
+        console.error('Error fetching player games:', error.response.data.error);
     }
 }
 
 async function add_game(players, winner) {
     const token = await auth.currentUser.getIdToken()
-
+    console.log("Sending these players!");
+    console.log(players);
     try {
         let response = await axios.post(BASE_URL + '/games/add', { players, winner, token }, {
             headers: {
@@ -170,7 +171,9 @@ async function add_game(players, winner) {
         console.log(data);
         return data;
     } catch (error) {
-        console.error('Error adding game:', error);
+        console.error('Error adding game:', error.response.data.error);
+        return error.response
+
     }
 }
 
@@ -183,7 +186,8 @@ async function get_unverified() {
         console.log(data);
         return data
     } catch (error) {
-        console.error('Error fetching player:', error);
+        console.error('Error fetching player:', error.response.data.error);
+        return error
     }
 }
 
@@ -194,7 +198,7 @@ async function get_all_players() {
         let data = response.data
         return data
     } catch (error) {
-        console.error('Error fetching player:', error);
+        console.error('Error fetching player:', error.response.data.error);
     }
 }
 
@@ -207,7 +211,7 @@ async function get_player(uid) {
         console.log(data);
         return data
     } catch (error) {
-        console.error('Error fetching player:', error);
+        console.error('Error fetching player:', error.response.data.error);
     }
 }
 
