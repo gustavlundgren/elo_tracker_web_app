@@ -9,9 +9,7 @@ const Sidebar = () => {
         <div>
             {/* Sidebar Toggle Button - Hidden when sidebar is open */}
             {!isOpen && (
-                <button className="sidebar-toggle" onClick={() => setIsOpen(true)}>
-                    ☰
-                </button>
+                <button className="sidebar-toggle" onClick={() => setIsOpen(true)}>☰</button>
             )}
 
             {/* Sidebar Panel */}

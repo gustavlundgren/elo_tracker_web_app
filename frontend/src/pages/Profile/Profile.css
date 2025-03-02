@@ -1,9 +1,20 @@
 .my-profile {
+    overflow-x: hidden;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.my-profile {
     padding: 20px;
     background-color: #1e1e1e;
     color: white;
     border-radius: 10px;
-    size: fixed;
+    width: 100%;
+    max-width: 600px; /* Prevents it from getting too wide on large screens */
+    margin: 0 auto;
 }
 
 .profile-info {
@@ -17,37 +28,29 @@
 
 .scrollable-history {
     max-height: 300px;
-    /* Set a fixed height for scroll */
     overflow-y: auto;
-    /* Enable vertical scrolling */
     padding-right: 10px;
-    /* Optional: add space to prevent scroll from hiding text */
 }
 
-.game-history ul {
-    list-style-type: none;
-    padding: 0;
-    color: white;
-    overflow: autoscroll;
-}
-
-.game-history li {
-    margin-bottom: 10px;
-    color: white;
-}
-
-#gameRequest {
-    margin-top: 20px;
-}
-
+.game-history ul,
 #gameRequest ul {
     list-style-type: none;
     padding: 0;
     color: white;
 }
 
+.game-history li,
 #gameRequest li {
     margin-bottom: 10px;
+    padding: 10px;
+    background: #2a2a2a;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+#gameRequest {
+    margin-top: 20px;
 }
 
 #reject-btn {
@@ -55,15 +58,32 @@
 }
 
 button {
-    background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 5px;
-    padding: 5px 10px;
-    margin-left: 10px;
+    padding: 10px;
+    margin: 5px 0;
     cursor: pointer;
+    width: 100%;
+    text-align: center;
 }
 
 button:hover {
     background-color: #45a049;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .my-profile {
+        padding: 15px;
+    }
+
+    .scrollable-history {
+        max-height: 200px; /* Reduce scroll area for small screens */
+    }
+
+    button {
+        padding: 8px;
+        font-size: 14px;
+    }
 }

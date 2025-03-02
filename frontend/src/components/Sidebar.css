@@ -19,14 +19,19 @@
 
 /* Close button */
 .close-btn {
+    width: fit-content;
     position: absolute;
-    top: 10px;
-    right: 15px;
+    top: 25px;
+    right: 5px;
     background: none;
     border: none;
     color: white;
     font-size: 20px;
     cursor: pointer;
+}
+
+.close-btn:active {
+    background: none;
 }
 
 /* Sidebar links */
@@ -55,17 +60,25 @@
 /* Sidebar toggle button */
 .sidebar-toggle {
     position: fixed;
-    top: 15px;
-    left: 15px;
-    background: #bb86fe;
+    top: 10px;
+    left: 10px;
+
+    width: fit-content;
+
+    background: none; 
     color: white;
     border: none;
-    font-size: 24px;
+    font-size: 32px;
     cursor: pointer;
     padding: 10px 15px;
     border-radius: 5px;
-    z-index: 1001;
+
     transition: opacity 0.3s ease-in-out;
+    max-width: 50px;
+}
+
+.sidebar-toggle:active {
+    background: none;
 }
 
 /* Hide the button when sidebar opens */

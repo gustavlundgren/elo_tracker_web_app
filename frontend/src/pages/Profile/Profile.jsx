@@ -49,7 +49,7 @@ const Profile = () => {
     }, []); // Empty dependency array to mimic componentDidMount in React
 
     const sortedGameHistory = () => {
-        return playerGames; // Reverse the game history array
+        return [...playerGames].sort((a, b) => new Date(b.time) - new Date(a.time));
     };
 
     const acceptRequest = async (request) => {

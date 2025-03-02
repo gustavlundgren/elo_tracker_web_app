@@ -82,6 +82,7 @@ build/
 # Windows specific
 Thumbs.db
 frontend/src/components/secret.js
+frontend/src/api/firebase-config.js
 
 !package.json
 *.cache

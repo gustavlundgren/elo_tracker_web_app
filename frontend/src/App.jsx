@@ -12,7 +12,6 @@ import "./index.css";
 function App() {
   return (
     <div className="app-container">
-      {}
       {window.location.pathname !== "/login" && window.location.pathname !== "/register" && <Sidebar />}
 
       <div className="content">
