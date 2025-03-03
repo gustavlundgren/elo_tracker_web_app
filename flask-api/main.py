@@ -58,12 +58,15 @@ def get_unverfied_games(uid):
     try:
         db = firestore.client()
         
-        docs = db.collection('players').where('uid', '==', uid).where('verified', '==', False).get()
-        return jsonify({'data': [doc.to_dict() for doc in docs]}), 200
+        docs = db.collection('players').where('uid', '==', uid).get()
+        username = docs[0].to_dict()['username']
+        
+        docs = db.collection('games').where('players', 'array_contains', username).where('verified', '==', False).get()
+        return jsonify({'data': [doc.to_dict() for doc in docs], 'uid': uid}), 200
     except Exception as e:
         return jsonify({'error': str(e)})
-# POST
 
+# POST
 @app.route('/api/games/verify', methods=['POST'])
 def verify_game():
     """
@@ -150,8 +153,13 @@ def add_game():
         # Verify the toke from the user
         auth.verify_id_token(token)
         
+        # Make a new document and get the id 
+        doc_ref = db.collection('games').document()
+        gid = doc_ref.id
+        
         # Add the new game to the collection
-        db.collection('games').add({
+        doc_ref.set({
+            'id': gid,
             'players': players, 
             'winner': winner, 
             'time': datetime.datetime.now(datetime.timezone.utc).timestamp(),

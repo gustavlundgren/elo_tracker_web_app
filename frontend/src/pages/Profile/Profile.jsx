@@ -1,13 +1,14 @@
 import React, { useState, useEffect, } from 'react';
-import { get_unverified, verify_game, delete_game, get_player_games, get_player_for_user, logout } from '../../api/index';
+import { get_unverified, get_player_games, get_player_for_user, logout } from '../../api/index';
 import "./Profile.css"
 import { useNavigate } from 'react-router';
+import UnverifiedGame from '../../components/UnverifiedGame';
 
 const Profile = () => {
     const [username, setUsername] = useState('');
     const [elo, setElo] = useState('');
-    const [pendingRequests, setPendingRequests] = useState([]);
     const [playerGames, setPlayerGames] = useState([]);
+    const [pendingRequests, setPendingRequests] = useState([]);
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -52,26 +53,14 @@ const Profile = () => {
         return [...playerGames].sort((a, b) => new Date(b.time) - new Date(a.time));
     };
 
-    const acceptRequest = async (request) => {
-        console.log('Accepted:', request);
-        removeRequest(request);
-        await verify_game(request.id); // Replace with actual game verification logic
-    };
-
-    const rejectRequest = async (request) => {
-        console.log('Rejected:', request);
-        removeRequest(request);
-        await delete_game(request.id); // Replace with actual game deletion logic
+    const handleLogout = () => {
+        logout();
+        navigate("/login", { state: { from: location.pathname } })
     };
 
     const removeRequest = (request) => {
         // Remove the request from pendingRequests
         setPendingRequests(pendingRequests.filter(r => r.id !== request.id));
-    };
-
-    const handleLogout = () => {
-        logout();
-        navigate("/login", { state: { from: location.pathname } })
     };
 
     return (
@@ -111,17 +100,15 @@ const Profile = () => {
                     <p>You have no pending game requests.</p>
                 ) : (
                     <ul>
-                        {pendingRequests.map(request => (
-                            <li key={request.id}>
-                                {request.game} - {request.opponent}
-                                <button onClick={() => acceptRequest(request)}>Accept</button>
-                                <button onClick={() => rejectRequest(request)} id="reject-btn">Reject</button>
+                        {pendingRequests.map(game => (
+                            < li key={game.id} >
+                                <UnverifiedGame game={game} removeRequest={removeRequest} />
                             </li>
                         ))}
                     </ul>
                 )}
             </div>
-        </div>
+        </div >
     );
 };
 
